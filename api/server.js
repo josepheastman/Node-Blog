@@ -16,6 +16,14 @@ server.use(cors());
 
 // ** Custom Middleware **
 
+const capitalCheck = (req, res, next) => {
+    req.body.name =
+    req.body.name
+    .split(' ')
+    .map((name) => name.charAt(0).toUpperCase() + name.substring(1))
+    .join(' ');
+    next()
+}
 
 // ** USERS **
 
@@ -51,7 +59,7 @@ server.get("/api/users/:id", (req, res) => {
     });
 });
 
-server.post("/api/users", (req, res) => {
+server.post("/api/users", capitalCheck, (req, res) => {
   const userInfo = req.body;
 
   if (!userInfo) {
@@ -94,7 +102,7 @@ server.delete("/api/users/:id", (req, res) => {
   });
 });
 
-server.put("/api/users/:id", (req, res) => {
+server.put("/api/users/:id", capitalCheck, (req, res) => {
   const id = req.params.id;
   const changes = req.body;
 
